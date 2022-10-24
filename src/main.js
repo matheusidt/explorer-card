@@ -1,26 +1,27 @@
 import "./css/index.css"
 import IMask from "imask"
 
-const ccBgColor01 = document.body.querySelector(
-  ".cc-bg svg > g g:nth-child(1) path"
-)
-const ccBgColor02 = document.body.querySelector(
-  ".cc-bg svg > g g:nth-child(2) path"
-)
+const ccBgColor01 = document.body.querySelector(".cc-bg svg > g g:nth-child(1) path")
+const ccBgColor02 = document.body.querySelector(".cc-bg svg > g g:nth-child(2) path")
 const ccLogo = document.body.querySelector(".cc-logo span:nth-child(2) img")
+const ccBg = document.querySelector(".cc")
 
 function setCardType(type) {
   const colors = {
-    visa: ["#366675", "#6166E1"],
-    mastercard: ["#D87740", "#DA3E28"],
-    default: ["gray", "black"],
+    visa: ["#19274A", "#173763", "#08519B"],
+    mastercard: ["#B6A37A", "#9E895C", "#6B5F47"],
+    itau:["#DB5200", "#EC4700", "#F26303"],
+    default: ["gray", "black", "#000000"],
   }
 
   ccBgColor01.setAttribute("fill", colors[type][0])
   ccBgColor02.setAttribute("fill", colors[type][1])
   ccLogo.setAttribute("src", `cc-${type}.svg`)
+  ccBg.style.backgroundColor = (colors[type][2]);
+  ccBg.style.borderRadius = "20px"
+
 }
-globalThis.setCardType = setCardType
+globalThis.setCardType = setCardType;
 
 const securityCode = document.querySelector("#security-code")
 const securityCodePattern = {
@@ -62,6 +63,11 @@ const cardNumberPattern = {
       cardtype: "visa",
     },
     {
+      mask:"0000 0000 0000 0000",
+      regex: /^5[6-8]\d{0,2}|^5[0]\d{0,2}/,
+      cardtype: "itau",
+    },
+    {
       mask: "0000 0000 0000 0000",
       cardtype: "default",
     },
@@ -82,17 +88,11 @@ addButton.addEventListener("click", () => {
   alert("Cartão adicionado")
 })
 
-const reload = document.querySelector("form")
-reload.addEventListener("submit", (event) => {
-  event.preventDefault()
-})
-
 const cardholder = document.querySelector("#card-holder")
 cardholder.addEventListener("input", () => {
   const ccholder = document.querySelector(".cc-holder .value")
 
-  ccholder.innerText =
-    cardholder.value.length === 0 ? "FULANO DA SILVA" : cardholder.value
+  ccholder.innerText = cardholder.value.length === 0 ? "FULANO DA SILVA" : cardholder.value
 })
 
 securityMask.on("accept", () => {
